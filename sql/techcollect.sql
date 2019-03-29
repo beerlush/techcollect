@@ -73,7 +73,7 @@ CREATE TABLE `comment` (
   KEY `fk_co_d_id` (`co_d_id`),
   KEY `fk_co_wu_id` (`co_wu_id`),
   CONSTRAINT `fk_co_d_id` FOREIGN KEY (`co_d_id`) REFERENCES `domain` (`d_id`),
-  CONSTRAINT `fk_co_wu_id` FOREIGN KEY (`co_wu_id`) REFERENCES `web_user` (`wu_id`)
+  CONSTRAINT `fk_co_wu_id` FOREIGN KEY (`co_wu_id`) REFERENCES "user" (u_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -145,8 +145,8 @@ CREATE TABLE `customer` (
   KEY `fk_c_orig_salesman` (`c_orig_salesman`),
   KEY `fk_c_salesman` (`c_salesman`),
   CONSTRAINT `fk_c_d_id` FOREIGN KEY (`c_d_id`) REFERENCES `domain` (`d_id`),
-  CONSTRAINT `fk_c_orig_salesman` FOREIGN KEY (`c_orig_salesman`) REFERENCES `web_user` (`wu_id`),
-  CONSTRAINT `fk_c_salesman` FOREIGN KEY (`c_salesman`) REFERENCES `web_user` (`wu_id`)
+  CONSTRAINT `fk_c_orig_salesman` FOREIGN KEY (`c_orig_salesman`) REFERENCES "user" (u_id),
+  CONSTRAINT `fk_c_salesman` FOREIGN KEY (`c_salesman`) REFERENCES "user" (u_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -206,7 +206,7 @@ CREATE TABLE `customer_comment` (
   KEY `fk_cco_wu_id` (`cco_wu_id`),
   CONSTRAINT `fk_cco_c_id` FOREIGN KEY (`cco_c_id`) REFERENCES `customer` (`c_id`),
   CONSTRAINT `fk_cco_co_id` FOREIGN KEY (`cco_co_id`) REFERENCES `comment` (`co_id`),
-  CONSTRAINT `fk_cco_wu_id` FOREIGN KEY (`cco_wu_id`) REFERENCES `web_user` (`wu_id`)
+  CONSTRAINT `fk_cco_wu_id` FOREIGN KEY (`cco_wu_id`) REFERENCES "user" (u_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -344,7 +344,7 @@ CREATE TABLE `debtor_comment` (
   KEY `fk_dc_wu_id` (`dc_wu_id`),
   CONSTRAINT `fk_dc_co_id` FOREIGN KEY (`dc_co_id`) REFERENCES `comment` (`co_id`),
   CONSTRAINT `fk_dc_de_id` FOREIGN KEY (`dc_de_id`) REFERENCES `debtor` (`de_id`),
-  CONSTRAINT `fk_dc_wu_id` FOREIGN KEY (`dc_wu_id`) REFERENCES `web_user` (`wu_id`)
+  CONSTRAINT `fk_dc_wu_id` FOREIGN KEY (`dc_wu_id`) REFERENCES "user" (u_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -387,7 +387,7 @@ CREATE TABLE `debtor_payment` (
   KEY `fk_dp_agent_id` (`dp_agent_id`),
   KEY `fk_dp_de_id` (`dp_de_id`),
   CONSTRAINT `fk_dp_addr_id` FOREIGN KEY (`dp_addr_id`) REFERENCES `address` (`ad_id`),
-  CONSTRAINT `fk_dp_agent_id` FOREIGN KEY (`dp_agent_id`) REFERENCES `web_user` (`wu_id`),
+  CONSTRAINT `fk_dp_agent_id` FOREIGN KEY (`dp_agent_id`) REFERENCES "user" (u_id),
   CONSTRAINT `fk_dp_de_id` FOREIGN KEY (`dp_de_id`) REFERENCES `debtor` (`de_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -441,7 +441,7 @@ CREATE TABLE `domain_web_user` (
   KEY `dwu_d_id_fk` (`dwu_d_id`),
   KEY `dwu_wu_id_fk` (`dwu_wu_id`),
   CONSTRAINT `dwu_d_id_fk` FOREIGN KEY (`dwu_d_id`) REFERENCES `domain` (`d_id`),
-  CONSTRAINT `dwu_wu_id_fk` FOREIGN KEY (`dwu_wu_id`) REFERENCES `web_user` (`wu_id`)
+  CONSTRAINT `dwu_wu_id_fk` FOREIGN KEY (`dwu_wu_id`) REFERENCES "user" (u_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -451,7 +451,7 @@ CREATE TABLE `domain_web_user` (
 
 LOCK TABLES `domain_web_user` WRITE;
 /*!40000 ALTER TABLE `domain_web_user` DISABLE KEYS */;
-INSERT INTO `domain_web_user` VALUES ('0811a564-9a43-4b8c-a960-e2ef55813712','0499345f-59be-4b64-9fdc-35c06b963e36','62106315-7929-46ea-b778-1916df2e3c9a');
+INSERT INTO domain_user VALUES ('0811a564-9a43-4b8c-a960-e2ef55813712','0499345f-59be-4b64-9fdc-35c06b963e36','62106315-7929-46ea-b778-1916df2e3c9a');
 /*!40000 ALTER TABLE `domain_web_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -489,7 +489,7 @@ CREATE TABLE `web_user` (
 
 LOCK TABLES `web_user` WRITE;
 /*!40000 ALTER TABLE `web_user` DISABLE KEYS */;
-INSERT INTO `web_user` VALUES ('62106315-7929-46ea-b778-1916df2e3c9a','1','Test','User',1,'$2a$10$VguyXAFGKpcpLm7H5KyMu.cLOTwLn.UPTQQMPg80Ch1/PCXCjPUqW',1,1548887966345,1,1,1,'Test User','Admin',NULL,'7708800987','testman@test.com');
+INSERT INTO "user" VALUES ('62106315-7929-46ea-b778-1916df2e3c9a','1','Test','User',1,'$2a$10$VguyXAFGKpcpLm7H5KyMu.cLOTwLn.UPTQQMPg80Ch1/PCXCjPUqW',1,1548887966345,1,1,1,'Test User','Admin',NULL,'7708800987','testman@test.com');
 /*!40000 ALTER TABLE `web_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
