@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.23, for macos10.13 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.22, for macos10.13 (x86_64)
 --
 -- Host: localhost    Database: techcollect
 -- ------------------------------------------------------
--- Server version	5.7.23
+-- Server version	5.7.22
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -67,13 +67,13 @@ CREATE TABLE `comment` (
   `co_d_id` char(36) DEFAULT NULL,
   `co_comment` varchar(2000) DEFAULT NULL,
   `co_comment_type` varchar(20) DEFAULT NULL,
-  `co_wu_id` char(36) DEFAULT NULL,
+  `co_u_id` char(36) DEFAULT NULL,
   `co_last_update` datetime DEFAULT NULL,
   PRIMARY KEY (`co_id`),
   KEY `fk_co_d_id` (`co_d_id`),
-  KEY `fk_co_wu_id` (`co_wu_id`),
+  KEY `fk_co_u_id` (`co_u_id`),
   CONSTRAINT `fk_co_d_id` FOREIGN KEY (`co_d_id`) REFERENCES `domain` (`d_id`),
-  CONSTRAINT `fk_co_wu_id` FOREIGN KEY (`co_wu_id`) REFERENCES "user" (u_id)
+  CONSTRAINT `fk_co_u_id` FOREIGN KEY (`co_u_id`) REFERENCES `user` (`u_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -145,8 +145,8 @@ CREATE TABLE `customer` (
   KEY `fk_c_orig_salesman` (`c_orig_salesman`),
   KEY `fk_c_salesman` (`c_salesman`),
   CONSTRAINT `fk_c_d_id` FOREIGN KEY (`c_d_id`) REFERENCES `domain` (`d_id`),
-  CONSTRAINT `fk_c_orig_salesman` FOREIGN KEY (`c_orig_salesman`) REFERENCES "user" (u_id),
-  CONSTRAINT `fk_c_salesman` FOREIGN KEY (`c_salesman`) REFERENCES "user" (u_id)
+  CONSTRAINT `fk_c_orig_salesman` FOREIGN KEY (`c_orig_salesman`) REFERENCES `user` (`u_id`),
+  CONSTRAINT `fk_c_salesman` FOREIGN KEY (`c_salesman`) REFERENCES `user` (`u_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -206,7 +206,7 @@ CREATE TABLE `customer_comment` (
   KEY `fk_cco_wu_id` (`cco_wu_id`),
   CONSTRAINT `fk_cco_c_id` FOREIGN KEY (`cco_c_id`) REFERENCES `customer` (`c_id`),
   CONSTRAINT `fk_cco_co_id` FOREIGN KEY (`cco_co_id`) REFERENCES `comment` (`co_id`),
-  CONSTRAINT `fk_cco_wu_id` FOREIGN KEY (`cco_wu_id`) REFERENCES "user" (u_id)
+  CONSTRAINT `fk_cco_wu_id` FOREIGN KEY (`cco_wu_id`) REFERENCES `user` (`u_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -344,7 +344,7 @@ CREATE TABLE `debtor_comment` (
   KEY `fk_dc_wu_id` (`dc_wu_id`),
   CONSTRAINT `fk_dc_co_id` FOREIGN KEY (`dc_co_id`) REFERENCES `comment` (`co_id`),
   CONSTRAINT `fk_dc_de_id` FOREIGN KEY (`dc_de_id`) REFERENCES `debtor` (`de_id`),
-  CONSTRAINT `fk_dc_wu_id` FOREIGN KEY (`dc_wu_id`) REFERENCES "user" (u_id)
+  CONSTRAINT `fk_dc_wu_id` FOREIGN KEY (`dc_wu_id`) REFERENCES `user` (`u_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -387,7 +387,7 @@ CREATE TABLE `debtor_payment` (
   KEY `fk_dp_agent_id` (`dp_agent_id`),
   KEY `fk_dp_de_id` (`dp_de_id`),
   CONSTRAINT `fk_dp_addr_id` FOREIGN KEY (`dp_addr_id`) REFERENCES `address` (`ad_id`),
-  CONSTRAINT `fk_dp_agent_id` FOREIGN KEY (`dp_agent_id`) REFERENCES "user" (u_id),
+  CONSTRAINT `fk_dp_agent_id` FOREIGN KEY (`dp_agent_id`) REFERENCES `user` (`u_id`),
   CONSTRAINT `fk_dp_de_id` FOREIGN KEY (`dp_de_id`) REFERENCES `debtor` (`de_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -412,6 +412,7 @@ CREATE TABLE `domain` (
   `d_id` char(36) NOT NULL,
   `d_name` varchar(40) NOT NULL,
   `d_time_zone` varchar(40) NOT NULL,
+  `d_active` int(1) DEFAULT '0',
   PRIMARY KEY (`d_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -422,75 +423,76 @@ CREATE TABLE `domain` (
 
 LOCK TABLES `domain` WRITE;
 /*!40000 ALTER TABLE `domain` DISABLE KEYS */;
-INSERT INTO `domain` VALUES ('0499345f-59be-4b64-9fdc-35c06b963e36','TechCollect','US/Eastern');
+INSERT INTO `domain` VALUES ('0499345f-59be-4b64-9fdc-35c06b963e36','TechCollect','US/Eastern',0);
 /*!40000 ALTER TABLE `domain` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `domain_web_user`
+-- Table structure for table `domain_user`
 --
 
-DROP TABLE IF EXISTS `domain_web_user`;
+DROP TABLE IF EXISTS `domain_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `domain_web_user` (
-  `dwu_id` char(36) NOT NULL,
-  `dwu_d_id` char(36) NOT NULL,
-  `dwu_wu_id` char(36) NOT NULL,
-  PRIMARY KEY (`dwu_id`),
-  KEY `dwu_d_id_fk` (`dwu_d_id`),
-  KEY `dwu_wu_id_fk` (`dwu_wu_id`),
-  CONSTRAINT `dwu_d_id_fk` FOREIGN KEY (`dwu_d_id`) REFERENCES `domain` (`d_id`),
-  CONSTRAINT `dwu_wu_id_fk` FOREIGN KEY (`dwu_wu_id`) REFERENCES "user" (u_id)
+CREATE TABLE `domain_user` (
+  `du_id` char(36) NOT NULL,
+  `du_d_id` char(36) NOT NULL,
+  `du_u_id` char(36) NOT NULL,
+  `du_primary` int(1) DEFAULT '0',
+  PRIMARY KEY (`du_id`),
+  KEY `du_d_id_fk` (`du_d_id`),
+  KEY `du_u_id_fk` (`du_u_id`),
+  CONSTRAINT `du_d_id_fk` FOREIGN KEY (`du_d_id`) REFERENCES `domain` (`d_id`),
+  CONSTRAINT `du_u_id_fk` FOREIGN KEY (`du_u_id`) REFERENCES `user` (`u_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `domain_web_user`
+-- Dumping data for table `domain_user`
 --
 
-LOCK TABLES `domain_web_user` WRITE;
-/*!40000 ALTER TABLE `domain_web_user` DISABLE KEYS */;
-INSERT INTO domain_user VALUES ('0811a564-9a43-4b8c-a960-e2ef55813712','0499345f-59be-4b64-9fdc-35c06b963e36','62106315-7929-46ea-b778-1916df2e3c9a');
-/*!40000 ALTER TABLE `domain_web_user` ENABLE KEYS */;
+LOCK TABLES `domain_user` WRITE;
+/*!40000 ALTER TABLE `domain_user` DISABLE KEYS */;
+INSERT INTO `domain_user` VALUES ('0811a564-9a43-4b8c-a960-e2ef55813712','0499345f-59be-4b64-9fdc-35c06b963e36','62106315-7929-46ea-b778-1916df2e3c9a',0);
+/*!40000 ALTER TABLE `domain_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `web_user`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `web_user`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `web_user` (
-  `wu_id` char(36) DEFAULT NULL,
-  `wu_num` varchar(20) DEFAULT NULL,
-  `wu_first_name` varchar(40) DEFAULT NULL,
-  `wu_last_name` varchar(40) DEFAULT NULL,
-  `wu_security` int(11) DEFAULT NULL,
-  `wu_password` varchar(255) DEFAULT NULL,
-  `wu_active` int(1) DEFAULT '0',
-  `wu_last_login` bigint(20) DEFAULT NULL,
-  `wu_payments` int(1) DEFAULT '0',
-  `wu_sales` int(1) DEFAULT '0',
-  `wu_agent` int(1) DEFAULT '0',
-  `wu_alias` varchar(255) DEFAULT NULL,
-  `wu_title` varchar(40) DEFAULT NULL,
-  `wu_quota` decimal(9,2) DEFAULT NULL,
-  `wu_phone` varchar(10) DEFAULT NULL,
-  `wu_email` varchar(255) DEFAULT NULL,
-  UNIQUE KEY `web_user_pk` (`wu_id`)
+CREATE TABLE `user` (
+  `u_id` char(36) DEFAULT NULL,
+  `u_num` varchar(20) DEFAULT NULL,
+  `u_first_name` varchar(40) DEFAULT NULL,
+  `u_last_name` varchar(40) DEFAULT NULL,
+  `u_security` int(11) DEFAULT NULL,
+  `u_password` varchar(255) DEFAULT NULL,
+  `u_active` int(1) DEFAULT '0',
+  `u_last_login` bigint(20) DEFAULT NULL,
+  `u_payments` int(1) DEFAULT '0',
+  `u_sales` int(1) DEFAULT '0',
+  `u_agent` int(1) DEFAULT '0',
+  `u_alias` varchar(255) DEFAULT NULL,
+  `u_title` varchar(40) DEFAULT NULL,
+  `u_quota` decimal(9,2) DEFAULT NULL,
+  `u_phone` varchar(10) DEFAULT NULL,
+  `u_email` varchar(255) DEFAULT NULL,
+  UNIQUE KEY `web_user_pk` (`u_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `web_user`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `web_user` WRITE;
-/*!40000 ALTER TABLE `web_user` DISABLE KEYS */;
-INSERT INTO "user" VALUES ('62106315-7929-46ea-b778-1916df2e3c9a','1','Test','User',1,'$2a$10$VguyXAFGKpcpLm7H5KyMu.cLOTwLn.UPTQQMPg80Ch1/PCXCjPUqW',1,1548887966345,1,1,1,'Test User','Admin',NULL,'7708800987','testman@test.com');
-/*!40000 ALTER TABLE `web_user` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES ('62106315-7929-46ea-b778-1916df2e3c9a','1','Test','User',1,'$2a$10$VguyXAFGKpcpLm7H5KyMu.cLOTwLn.UPTQQMPg80Ch1/PCXCjPUqW',1,1548887966345,1,1,1,'Test User','Admin',NULL,'7708800987','testman@test.com');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -502,4 +504,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-28 21:30:37
+-- Dump completed on 2019-03-29  0:09:12
