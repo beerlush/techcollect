@@ -17,10 +17,10 @@ class DomainJDBCTemplate @Autowired constructor(private val jdbcTemplate: JdbcTe
     }
     companion object {
         fun initFromRs(rs: ResultSet): Domain {
-            var domain = Domain(rs.getString("do_id"))
-            domain.name = rs.getString("do_name")
-            domain.active = rs.getBoolean("do_active")
-            domain.timezone = rs.getString("do_timezone")
+            var domain = Domain(rs.getString("d_id"))
+            domain.name = rs.getString("d_name")
+            domain.active = rs.getBoolean("d_active")
+            domain.timezone = rs.getString("d_timezone")
             return domain
         }
     }

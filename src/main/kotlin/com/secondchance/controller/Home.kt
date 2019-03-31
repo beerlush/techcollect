@@ -10,7 +10,7 @@ import org.springframework.ui.Model
 @Controller
 class Home @Autowired constructor(private val userSvc: UserSvc) {
 
-    @RequestMapping(value="/login", method=arrayOf(RequestMethod.GET))
+    @RequestMapping("/login", method=arrayOf(RequestMethod.GET))
     fun loginAction(): String {
         return "login"
     }

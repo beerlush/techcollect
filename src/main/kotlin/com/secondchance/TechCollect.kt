@@ -3,12 +3,19 @@ package com.secondchance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.Banner
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.core.env.Environment
 import javax.sql.DataSource
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.boot.runApplication
+import java.util.Locale
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor
+
+
+
+
 
 
 @SpringBootApplication
@@ -32,9 +39,11 @@ class TechCollect {
                 .url(url)
                 .build()
     }
+
 }
 
 fun main(args: Array<String>) {
+    System.out.println(BCrypt.hashpw("tester", BCrypt.gensalt()));
     runApplication<TechCollect>(*args) {
         setBannerMode(Banner.Mode.OFF)
     }

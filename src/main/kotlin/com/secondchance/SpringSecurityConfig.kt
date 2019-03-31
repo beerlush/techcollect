@@ -13,7 +13,6 @@ class SpringSecurityConfig constructor(private val authProvider: AuthenticationP
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.authenticationProvider(authProvider)
     }
-    @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http
             .csrf().disable()

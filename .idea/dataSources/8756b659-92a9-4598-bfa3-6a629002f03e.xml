@@ -1752,7 +1752,7 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="407" parent="244" name="d_time_zone">
+    <column id="407" parent="244" name="d_timezone">
       <Position>3</Position>
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>

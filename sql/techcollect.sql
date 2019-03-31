@@ -411,7 +411,7 @@ DROP TABLE IF EXISTS `domain`;
 CREATE TABLE `domain` (
   `d_id` char(36) NOT NULL,
   `d_name` varchar(40) NOT NULL,
-  `d_time_zone` varchar(40) NOT NULL,
+  `d_timezone` varchar(40) NOT NULL,
   `d_active` int(1) DEFAULT '0',
   PRIMARY KEY (`d_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -423,7 +423,7 @@ CREATE TABLE `domain` (
 
 LOCK TABLES `domain` WRITE;
 /*!40000 ALTER TABLE `domain` DISABLE KEYS */;
-INSERT INTO `domain` VALUES ('0499345f-59be-4b64-9fdc-35c06b963e36','TechCollect','US/Eastern',0);
+INSERT INTO `domain` VALUES ('0499345f-59be-4b64-9fdc-35c06b963e36','TechCollect','US/Eastern',1),('85d13bf0-1065-458a-9c78-af41dc645ff4','TechCollect 2','US/Eastern',1);
 /*!40000 ALTER TABLE `domain` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -453,7 +453,7 @@ CREATE TABLE `domain_user` (
 
 LOCK TABLES `domain_user` WRITE;
 /*!40000 ALTER TABLE `domain_user` DISABLE KEYS */;
-INSERT INTO `domain_user` VALUES ('0811a564-9a43-4b8c-a960-e2ef55813712','0499345f-59be-4b64-9fdc-35c06b963e36','62106315-7929-46ea-b778-1916df2e3c9a',0);
+INSERT INTO `domain_user` VALUES ('0811a564-9a43-4b8c-a960-e2ef55813712','0499345f-59be-4b64-9fdc-35c06b963e36','62106315-7929-46ea-b778-1916df2e3c9a',1),('72a3fe46-ce0a-4624-bc63-f72ae9285bf5','85d13bf0-1065-458a-9c78-af41dc645ff4','62106315-7929-46ea-b778-1916df2e3c9a',0);
 /*!40000 ALTER TABLE `domain_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -504,4 +504,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-29  0:09:12
+-- Dump completed on 2019-03-31  9:13:08
