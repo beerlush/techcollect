@@ -52,10 +52,16 @@
                         <a class="dropdown-item" href="/logout" id="userLogout" th:text="#{nav.logout}">Logout</a>
                     </div>
                 </li>
-                <li class="nav-item dropdown" th:if="${#authentication.principal.getDomains().size() > 1}">
-                    <a class="nav-link dropdown-toggle" href="#" id="domain" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:attr="id=${#authentication.principal.domains[0].id}" th:text="${#authentication.principal.domains[0].name}">Dropdown</a>
+                <li class="nav-item dropdown" th:if="${#authentication.principal.roles.size() > 1}">
+                    <a class="nav-link dropdown-toggle" href="#" id="role" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:attr="id=${#authentication.principal.defaultRole.id}" th:text="${#authentication.principal.defaultRole.name}">Dropdown</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="role">
+                        <a class="dropdown-item" href="#" th:each="role : ${#authentication.principal.roles}" th:attr="id=${role.id}" th:text="${role.name}" >Action</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown" th:if="${#authentication.principal.domains.size() > 1}">
+                    <a class="nav-link dropdown-toggle" href="#" id="domain" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:attr="id=${#authentication.principal.defaultDomain.id}" th:text="${#authentication.principal.defaultDomain.name}">Dropdown</a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="domain">
-                        <a class="dropdown-item" href="#" th:each="domain : ${#authentication.principal.getDomains()}" th:attr="id=${domain.id}" th:text="${domain.name}" >Action</a>
+                        <a class="dropdown-item" href="#" th:each="domain : ${#authentication.principal.domains}" th:attr="id=${domain.id}" th:text="${domain.name}" >Action</a>
                     </div>
                 </li>
             </ul>
@@ -73,7 +79,7 @@
         <!--<script src="/js/vendor/bootstrap-table-reorder-rows.js"></script>-->
         <!--<script src="/js/vendor/bootstrap-treeview.min.js"></script>-->
 
-        <script src="/javascript/index.js"></script>
+        <script defer src="/js/main.js"></script>
 
         <div class="container-fluid text-center text-md-left">
             <div class="footer-copyright py-3"><span th:utext="#{footer.copyright}">© 2018 Copyright:</span>

@@ -9,10 +9,10 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Component
 
 @Component
-class DomainJDBCTemplate @Autowired constructor(private val jdbcTemplate: JdbcTemplate) {
+class DomainDAO @Autowired constructor(private val jdbcTemplate: JdbcTemplate) {
     inner class DomainRowMapper: RowMapper<Domain> {
         override fun mapRow(rs: ResultSet, rowNum:Int):Domain {
-            return DomainJDBCTemplate.initFromRs(rs)
+            return DomainDAO.initFromRs(rs)
         }
     }
     companion object {

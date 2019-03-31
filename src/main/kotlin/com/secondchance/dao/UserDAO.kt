@@ -1,6 +1,7 @@
 package com.secondchance.dao
 
 import com.secondchance.model.Domain
+import com.secondchance.model.Role
 import com.secondchance.model.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
@@ -9,14 +10,13 @@ import java.sql.ResultSet
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Component
 import java.time.Instant
-import java.time.LocalDateTime
 import java.time.ZoneId
 
 @Component
-class UserJDBCTemplate @Autowired constructor(private val jdbcTemplate: JdbcTemplate) {
+class UserDAO @Autowired constructor(private val jdbcTemplate: JdbcTemplate) {
     inner class UserRowMapper: RowMapper<User> {
         override fun mapRow(rs: ResultSet, rowNum:Int):User {
-            return UserJDBCTemplate.initFromRs(rs)
+            return UserDAO.initFromRs(rs)
         }
     }
 
@@ -36,6 +36,8 @@ class UserJDBCTemplate @Autowired constructor(private val jdbcTemplate: JdbcTemp
             user.title = rs.getString("u_title")
             user.security = rs.getInt("u_security")
             user.alias = rs.getString("u_alias")
+            user.defaultDomain = Domain(rs.getString("u_d_default_id"))
+            user.defaultRole = Role(rs.getString("u_r_default_id"))
             return user
         }
     }

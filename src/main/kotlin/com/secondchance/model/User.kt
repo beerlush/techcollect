@@ -16,6 +16,9 @@ data class User(var id:String?) {
     var title:String = ""
     var quota:Float = Float.MIN_VALUE
     var phone:String = ""
+    var defaultRole:Role? = null
+    var defaultDomain:Domain? = null
 
     var domains:List<Domain> = ArrayList<Domain>()
+    var roles:List<Role> = ArrayList<Role>()
 }

@@ -12,10 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.boot.runApplication
 import java.util.Locale
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor
-
-
-
-
+import java.time.Instant
 
 
 @SpringBootApplication
@@ -43,7 +40,8 @@ class TechCollect {
 }
 
 fun main(args: Array<String>) {
-    System.out.println(BCrypt.hashpw("tester", BCrypt.gensalt()));
+    System.out.println(BCrypt.hashpw("tester", BCrypt.gensalt()))
+
     runApplication<TechCollect>(*args) {
         setBannerMode(Banner.Mode.OFF)
     }
