@@ -138,8 +138,9 @@ CREATE TABLE `customer` (
   `c_fee` int(11) DEFAULT NULL,
   `c_non_prime_fee` int(11) DEFAULT NULL,
   `c_last_update_by` char(36) DEFAULT NULL,
-  `c_last_update_ts` datetime DEFAULT NULL,
+  `c_next_update_ts` datetime DEFAULT NULL,
   `c_d_id` char(36) DEFAULT NULL,
+  `c_last_update_ts` datetime DEFAULT NULL,
   PRIMARY KEY (`c_id`),
   KEY `fk_c_d_id` (`c_d_id`),
   KEY `fk_c_orig_salesman` (`c_orig_salesman`),
@@ -156,6 +157,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+INSERT INTO `customer` VALUES ('38a4112c-537d-467b-8929-ac572716e6f6','67145','Restaurant Services','REMIT DUE','62106315-7929-46ea-b778-1916df2e3c9a','62106315-7929-46ea-b778-1916df2e3c9a',NULL,NULL,NULL,'','2019-03-31 22:57:44','0499345f-59be-4b64-9fdc-35c06b963e36','2019-03-31 22:58:27');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -438,7 +440,6 @@ CREATE TABLE `domain_user` (
   `du_id` char(36) NOT NULL,
   `du_d_id` char(36) NOT NULL,
   `du_u_id` char(36) NOT NULL,
-  `du_primary` int(1) DEFAULT '0',
   PRIMARY KEY (`du_id`),
   KEY `du_d_id_fk` (`du_d_id`),
   KEY `du_u_id_fk` (`du_u_id`),
@@ -453,8 +454,32 @@ CREATE TABLE `domain_user` (
 
 LOCK TABLES `domain_user` WRITE;
 /*!40000 ALTER TABLE `domain_user` DISABLE KEYS */;
-INSERT INTO `domain_user` VALUES ('0811a564-9a43-4b8c-a960-e2ef55813712','0499345f-59be-4b64-9fdc-35c06b963e36','62106315-7929-46ea-b778-1916df2e3c9a',1),('72a3fe46-ce0a-4624-bc63-f72ae9285bf5','85d13bf0-1065-458a-9c78-af41dc645ff4','62106315-7929-46ea-b778-1916df2e3c9a',0);
+INSERT INTO `domain_user` VALUES ('0811a564-9a43-4b8c-a960-e2ef55813712','0499345f-59be-4b64-9fdc-35c06b963e36','62106315-7929-46ea-b778-1916df2e3c9a'),('72a3fe46-ce0a-4624-bc63-f72ae9285bf5','85d13bf0-1065-458a-9c78-af41dc645ff4','62106315-7929-46ea-b778-1916df2e3c9a');
 /*!40000 ALTER TABLE `domain_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `role`
+--
+
+DROP TABLE IF EXISTS `role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `role` (
+  `r_id` char(36) NOT NULL,
+  `r_name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`r_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `role`
+--
+
+LOCK TABLES `role` WRITE;
+/*!40000 ALTER TABLE `role` DISABLE KEYS */;
+INSERT INTO `role` VALUES ('013a0522-9a10-457f-b51a-4bc5b76c7af8','DomainAdmin'),('02594af0-8b3d-4daf-8daf-5a2863c67117','SysAdmin'),('3469c8b8-3528-461a-bd60-10e8f4fc921f','Agent'),('8b5f5636-3e6b-4fce-95ca-a23b1e706ecf','Sales'),('acafbdd9-33e3-484b-a168-e56cb1ef9015','Payments');
+/*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -481,7 +506,13 @@ CREATE TABLE `user` (
   `u_quota` decimal(9,2) DEFAULT NULL,
   `u_phone` varchar(10) DEFAULT NULL,
   `u_email` varchar(255) DEFAULT NULL,
-  UNIQUE KEY `web_user_pk` (`u_id`)
+  `u_r_default_id` char(36) DEFAULT NULL,
+  `u_d_default_id` char(36) DEFAULT NULL,
+  UNIQUE KEY `web_user_pk` (`u_id`),
+  KEY `fk_u_d_default_id` (`u_d_default_id`),
+  KEY `fk_u_r_default_id` (`u_r_default_id`),
+  CONSTRAINT `fk_u_d_default_id` FOREIGN KEY (`u_d_default_id`) REFERENCES `domain` (`d_id`),
+  CONSTRAINT `fk_u_r_default_id` FOREIGN KEY (`u_r_default_id`) REFERENCES `role` (`r_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -491,8 +522,37 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('62106315-7929-46ea-b778-1916df2e3c9a','1','Test','User',1,'$2a$10$VguyXAFGKpcpLm7H5KyMu.cLOTwLn.UPTQQMPg80Ch1/PCXCjPUqW',1,1548887966345,1,1,1,'Test User','Admin',NULL,'7708800987','testman@test.com');
+INSERT INTO `user` VALUES ('62106315-7929-46ea-b778-1916df2e3c9a','1','Test','User',1,'$2a$10$VguyXAFGKpcpLm7H5KyMu.cLOTwLn.UPTQQMPg80Ch1/PCXCjPUqW',1,1548887966345,1,1,1,'Test User','Admin',NULL,'7708800987','testman@test.com','8b5f5636-3e6b-4fce-95ca-a23b1e706ecf','0499345f-59be-4b64-9fdc-35c06b963e36');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_role`
+--
+
+DROP TABLE IF EXISTS `user_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_role` (
+  `ur_id` char(36) NOT NULL,
+  `ur_u_id` char(36) DEFAULT NULL,
+  `ur_r_id` char(36) DEFAULT NULL,
+  PRIMARY KEY (`ur_id`),
+  KEY `fk_ur_r_id` (`ur_r_id`),
+  KEY `fk_ur_u_id` (`ur_u_id`),
+  CONSTRAINT `fk_ur_r_id` FOREIGN KEY (`ur_r_id`) REFERENCES `role` (`r_id`),
+  CONSTRAINT `fk_ur_u_id` FOREIGN KEY (`ur_u_id`) REFERENCES `user` (`u_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_role`
+--
+
+LOCK TABLES `user_role` WRITE;
+/*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
+INSERT INTO `user_role` VALUES ('2b213fcc-6868-484e-b4a6-fe79d781c2aa','62106315-7929-46ea-b778-1916df2e3c9a','acafbdd9-33e3-484b-a168-e56cb1ef9015'),('82846414-c7c7-4b54-876e-cfdbd899005b','62106315-7929-46ea-b778-1916df2e3c9a','3469c8b8-3528-461a-bd60-10e8f4fc921f'),('a5e30d5b-1a9d-47f1-ae9d-c9e31a8c1895','62106315-7929-46ea-b778-1916df2e3c9a','8b5f5636-3e6b-4fce-95ca-a23b1e706ecf'),('b384dbca-1149-42c7-8ffe-2d1e5bf477b1','62106315-7929-46ea-b778-1916df2e3c9a','02594af0-8b3d-4daf-8daf-5a2863c67117'),('bf167390-073c-4322-9031-a02f65f2e90d','62106315-7929-46ea-b778-1916df2e3c9a','013a0522-9a10-457f-b51a-4bc5b76c7af8');
+/*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -504,4 +564,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-31  9:13:08
+-- Dump completed on 2019-03-31 19:54:38
