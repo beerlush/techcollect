@@ -25,4 +25,9 @@ class Home @Autowired constructor(private val userSvc: UserSvc) {
     fun home(): String {
         return "index"
     }
+
+    @RequestMapping("/logout", method=arrayOf(RequestMethod.GET))
+    fun logout(): String {
+        return "login"
+    }
 }

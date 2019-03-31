@@ -1,0 +1,31 @@
+{
+  "name": "techcollect",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "node-sass": "^4.11.0",
+    "npm": "^6.9.0"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "npm-watch": "^0.6.0",
+    "watchify": "^3.11.1"
+  },
+  "scripts": {
+    "watch-scss": "node-sass ./src/main/webapp/scss -o ./src/main/webapp/css",
+    "watch-js": "watchify ./src/main/webapp/javascript/*.js -o ./src/main/webapp/js/main.js -dv",
+    "watch": "npm run watch-scss & npm run watch-js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beerlush/techcollect.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/beerlush/techcollect/issues"
+  },
+  "homepage": "https://github.com/beerlush/techcollect#readme"
+}

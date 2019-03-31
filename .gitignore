@@ -2,4 +2,5 @@
 build
 out
 .gradle
+node_modules
 
